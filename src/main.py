@@ -20,7 +20,7 @@ class Shipment():
         self.start_time = time.time()
         self.mydb.Output.create_index([("country_name", 1)] )
 
-    def bul(self, item, args):
+    def search(self, item, args):
 
         args.remove(item)
         for j in args:
@@ -68,11 +68,14 @@ if __name__ == '__main__':
 
     for i in shipment.mydb.Companies.find({}, {"country_name": 1, "_id": 0}):
 
-        shipment.bul(i["country_name"], country_list)
+        shipment.search(i["country_name"], country_list)
 
     shipment.print_output()
+
     print(shipment.print_dict)
     print("--- %s seconds ---last" % (time.time() - shipment.start_time) )
+
+    # Index varlığını test etmek için drop fonksiyonunu kapatabilirsiniz. Daha efektif bir test için bu metodu yazdım.
     input_collection.drop_collections()
 
     # See PyCharm help at https://www.jetbrains.com/help/pycharm/
