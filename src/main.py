@@ -1,10 +1,10 @@
 # This is a sample Python script.
 import pymongo
-import create_collection
+from src import create_collection
 import operator
 
 
-class Sinif():
+class Shipment():
 
     def __init__(self):
         # Database connection
@@ -43,12 +43,11 @@ class Sinif():
             country_list.append(i["country_name"])
         return country_list
 
-    def inc_processing_function(self, count):
-        sum_process = count * (count - 1)
+    # def inc_processing_function(self, count):
+    #     sum_process = count * (count - 1)
+    #
+    #     return sum_process % 3
 
-        return sum_process % 3
-
-    @property
     def print_output(self):
         for i in self.mydb.Output.find({}, {"_id": 0} ).sort([("FROM_COUNTRY", 1), ("TO_COUNTRY", 1)]):
             print(i)
@@ -59,18 +58,23 @@ class Sinif():
 
 
 if __name__ == '__main__':
+    # Dökümanda belirtildiği üzere giriş değerlerimiz için bir collection oluşturdum.
+    input_collection = create_collection.CreateCollections()
 
-    instance = create_collection.CreateCollections()
+    # İşlemlerin yapıldığı ana sınıfımızı örnekliyoruz.
+    shipment = Shipment()
+    # Burada ülkelerin listesini collectiondan çekiyoruz.
+    country_list = shipment.country_function()
 
-    sinif = Sinif()
-    country_list = sinif.country_function()
-    inc_processing = sinif.inc_processing_function(instance.get_deger)
+    # inc_processing = shipment.inc_processing_function(input_collection.get_document_count)
 
-    for i in sinif.mydb.Companies.find({}, {"country_name": 1, "_id": 0}):
+    for i in shipment.mydb.Companies.find({}, {"country_name": 1, "_id": 0}):
 
-        sinif.bul(i["country_name"], country_list)
+        shipment.bul(i["country_name"], country_list)
 
-    sinif.print_output
-    print(sinif.print_dict)
+    shipment.print_output()
+    print(shipment.print_dict)
+
+    input_collection.drop_collections()
 
     # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -8,11 +8,11 @@ class CreateCollections:
         self.myclients = pymongo.MongoClient("mongodb+srv://mahmut:123@cluster0.3ycuu.mongodb.net/PorteDB?retryWrites=true&w=majority")
         self.mydb = self.myclients["PorteDB"]
 
-        self.return_count()
+        self.input_collection()
 
-        self.deger = self.mydb.Companies.count_documents({})
+        self.document_count = self.mydb.Companies.count_documents({})
 
-    def return_count(self):
+    def input_collection(self):
         country_list = [
             {"id": "1", "country_name": "A", "X": 10, "Y": 20, "Z": 15},
             {"id": "2", "country_name": "B", "X": 8, "Y": 14, "Z": 22},
@@ -28,6 +28,10 @@ class CreateCollections:
         result = companies_collection.insert_many(country_list)
         result.inserted_ids
 
+    def drop_collections(self):
+        self.mydb.Output.drop()
+        self.mydb.Companies.drop()
+
     @property
-    def get_deger(self):
-        return self.deger
+    def get_document_count(self):
+        return self.document_count
